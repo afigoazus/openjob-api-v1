@@ -1,0 +1,9 @@
+node_modules/
+.env
+*.dbdiagram
+*.dbml
+*.png
+ERD-PROMPT.md
+*:Zone.Identifier
+pnpm-lock.yaml
+ERD-PROMPT.md

@@ -1,0 +1,38 @@
+{
+  "name": "Submission Fundamental Back-End",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start:dev": "node --watch ./src/server.js",
+    "lint": "eslint ./",
+    "migrate": "node-pg-migrate",
+    "migrate:up": "node-pg-migrate up",
+    "migrate:down": "node-pg-migrate down",
+    "migrate:create": "node-pg-migrate create"
+  },
+  "node-pg-migrate": {
+    "migrationsDir": "migrations",
+    "databaseUrlVar": "DATABASE_URL"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.12.2",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.3.0",
+    "globals": "^17.6.0"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "joi": "^18.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "nanoid": "^5.1.11",
+    "node-pg-migrate": "^8.0.4",
+    "pg": "^8.20.0"
+  }
+}
