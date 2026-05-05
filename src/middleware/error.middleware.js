@@ -1,6 +1,6 @@
-import { STATUS } from "../utils/constants";
-import { AppError } from "../utils/error";
-import { sendResponse } from "../utils/response";
+import { STATUS } from "../utils/constants.js";
+import { AppError } from "../utils/error.js";
+import { sendResponse } from "../utils/response.js";
 
 export function errorHandler(err, _req, res, _next) {
   if (err instanceof AppError) {
