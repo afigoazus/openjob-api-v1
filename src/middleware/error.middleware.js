@@ -3,6 +3,11 @@ import AppError from "../utils/error.js";
 import { sendResponse } from "../utils/response.js";
 
 export function errorHandler(err, _req, res, _next) {
+  if (err.isJoi || err.name === "ValidationError") {
+    sendResponse(res, 400, STATUS.FAIL, "Validation Error", undefined, undefined, err.details?.map((d) => d.message));
+    return;
+  }
+
   if (err instanceof AppError) {
     const statusText =
       err.status >= 500
@@ -27,4 +32,6 @@ export function errorHandler(err, _req, res, _next) {
     );
     return;
   }
+
+  sendResponse(res, 500, STATUS.ERROR, "Internal Server Error");
 }
