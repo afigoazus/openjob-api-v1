@@ -1,10 +1,19 @@
 import { STATUS } from "../utils/constants.js";
 import AppError from "../utils/error.js";
 import { sendResponse } from "../utils/response.js";
+import { logger } from "../utils/logger.js";
 
 export function errorHandler(err, _req, res, _next) {
   if (err.isJoi || err.name === "ValidationError") {
-    sendResponse(res, 400, STATUS.FAIL, "Validation Error", undefined, undefined, err.details?.map((d) => d.message));
+    sendResponse(
+      res,
+      400,
+      STATUS.FAIL,
+      "Validation Error",
+      undefined,
+      undefined,
+      err.details?.map((d) => d.message),
+    );
     return;
   }
 
@@ -33,5 +42,6 @@ export function errorHandler(err, _req, res, _next) {
     return;
   }
 
+  logger.error(`Unhandled error: ${err.message}\n${err.stack}`);
   sendResponse(res, 500, STATUS.ERROR, "Internal Server Error");
 }
