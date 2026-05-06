@@ -1,5 +1,5 @@
 import { STATUS } from "../utils/constants.js";
-import { AppError } from "../utils/error.js";
+import AppError from "../utils/error.js";
 import { sendResponse } from "../utils/response.js";
 
 export function errorHandler(err, _req, res, _next) {
@@ -12,7 +12,7 @@ export function errorHandler(err, _req, res, _next) {
           : err.status === 403
             ? STATUS.FORBIDDEN
             : err.status === 404
-              ? STATUS.NOT_FOUND
+              ? STATUS.FAIL
               : err.status === 409
                 ? STATUS.CONFLICT
                 : STATUS.FAIL;
