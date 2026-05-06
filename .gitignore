@@ -5,5 +5,4 @@ node_modules/
 *.png
 ERD-PROMPT.md
 *:Zone.Identifier
-pnpm-lock.yaml
 ERD-PROMPT.md
