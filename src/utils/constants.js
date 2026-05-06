@@ -1,6 +1,6 @@
 export const STATUS = {
   SUCCESS: "success",
-  FAIL: "fail",
+  FAIL: "failed",
   ERROR: "error",
   UNAUTHORIZED: "unauthorized",
   BAD_REQUEST: "bad request",
