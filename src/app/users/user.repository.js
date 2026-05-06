@@ -37,6 +37,7 @@ class UserRepositories {
 
     return result.rows[0];
   }
+
 }
 
 export default new UserRepositories();
