@@ -9,7 +9,8 @@ class AuthenticationRepositories {
 
   async addRefreshToken(id, token, userId) {
     const query = {
-      text: "INSERT INTO refresh_tokens(id, user_id, token) VALUES($1, $2, $3)",
+      text: `INSERT INTO refresh_tokens(id, user_id, token) VALUES($1, $2, $3)
+             ON CONFLICT (user_id) DO UPDATE SET token = $3`,
       values: [id, userId, token],
     };
 
@@ -27,7 +28,7 @@ class AuthenticationRepositories {
 
   async verifyRefreshToken(token) {
     const query = {
-      text: "SELECT token FROM authentications WHERE token = $1",
+      text: "SELECT token FROM refresh_tokens WHERE token = $1",
       values: [token],
     };
 
