@@ -23,7 +23,7 @@ class JobsRepositories {
     const id = nanoid(16);
 
     const query = {
-      text: "INSERT INTO jobs(id, company_id, category_id, title, description, job_type, experience_level, location_type, location_city, salary_min, salary_max, is_salary_visible, status) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING id",
+      text: "INSERT INTO jobs(id, company_id, category_id, title, description, job_type, experience_level, location_type, location_city, salary_min, salary_max, status) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id",
       values: [
         id,
         company_id,
@@ -36,7 +36,6 @@ class JobsRepositories {
         location_city,
         salary_min,
         salary_max,
-        is_salary_visible,
         status,
       ],
     };

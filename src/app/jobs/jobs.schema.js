@@ -8,10 +8,10 @@ export const createJobsSchema = Joi.object({
   job_type: Joi.string().required(),
   experience_level: Joi.string().required(),
   location_type: Joi.string().required(),
-  location_city: Joi.string().required(),
-  salary_min: Joi.number().required(),
-  salary_max: Joi.number().required(),
-  is_salary_visible: Joi.boolean().required(),
+  location_city: Joi.string(),
+  salary_min: Joi.number(),
+  salary_max: Joi.number(),
+  is_salary_visible: Joi.boolean(),
   status: Joi.string().required(),
 });
 
