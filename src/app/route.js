@@ -5,6 +5,7 @@ import company from "./company/company.route.js";
 import categories from "./category/category.route.js";
 import jobs from "./jobs/jobs.route.js";
 import applications from "./applications/application.route.js";
+import bookmarks from "./bookmark/bookmark.route.js";
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use("/companies", company);
 router.use("/categories", categories);
 router.use("/jobs", jobs);
 router.use("/applications", applications);
+router.use("/", bookmarks);
 
 export default router;

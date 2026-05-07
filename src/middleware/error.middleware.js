@@ -22,7 +22,7 @@ export function errorHandler(err, _req, res, _next) {
       err.status >= 500
         ? STATUS.ERROR
         : err.status === 401
-          ? STATUS.UNAUTHORIZED
+          ? STATUS.FAIL
           : err.status === 403
             ? STATUS.FORBIDDEN
             : err.status === 404
