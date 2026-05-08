@@ -5,6 +5,7 @@ uploads/*
 *.dbdiagram
 *.dbml
 *.png
+!ERD-OpenJob-versi-1.png
 ERD-PROMPT.md
 *:Zone.Identifier
 ERD-PROMPT.md
