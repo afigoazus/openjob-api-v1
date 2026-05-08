@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "start:prod": "node ./src/server.js",
     "start:dev": "node --watch ./src/server.js",
     "lint": "eslint ./",
     "migrate": "node-pg-migrate",
