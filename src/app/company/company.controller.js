@@ -24,7 +24,13 @@ export async function getCompany(req, res, next) {
 export async function getCompanyById(req, res, next) {
   const { id } = req.params;
   try {
-    const company = await companyService.getCompanyById(id);
+    const { data, fromCache } = await companyService.getCompanyById(id);
+
+    if (fromCache) {
+      res.setHeader("X-Data-Source", "cache");
+    } else {
+      res.setHeader("X-Data-Source", "database");
+    }
 
     sendResponse(
       res,
@@ -32,7 +38,7 @@ export async function getCompanyById(req, res, next) {
       STATUS.SUCCESS,
       "Company berhasil didapatkan",
       "data",
-      company,
+      data,
     );
   } catch (error) {
     next(error);

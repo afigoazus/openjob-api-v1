@@ -25,7 +25,14 @@ export async function getApplicationById(req, res, next) {
   const { id } = req.params;
 
   try {
-    const applications = await applicationsService.getApplicationById(id);
+    const { data, fromCache } =
+      await applicationsService.getApplicationById(id);
+
+    if (fromCache) {
+      res.setHeader("X-Data-Source", "cache");
+    } else {
+      res.setHeader("X-Data-Source", "database");
+    }
 
     sendResponse(
       res,
@@ -33,7 +40,7 @@ export async function getApplicationById(req, res, next) {
       STATUS.SUCCESS,
       "Applications berhasil didapatkan",
       "data",
-      applications,
+      data,
     );
   } catch (error) {
     next(error);
@@ -44,8 +51,14 @@ export async function getApplicationByUserId(req, res, next) {
   const { userId } = req.params;
 
   try {
-    const applications =
+    const { data, fromCache } =
       await applicationsService.getApplicationByUserId(userId);
+
+    if (fromCache) {
+      res.setHeader("X-Data-Source", "cache");
+    } else {
+      res.setHeader("X-Data-Source", "database");
+    }
 
     sendResponse(
       res,
@@ -54,7 +67,7 @@ export async function getApplicationByUserId(req, res, next) {
       "Applications berhasil didapatkan",
       "data",
       {
-        applications,
+        applications: data,
       },
     );
   } catch (error) {
@@ -66,8 +79,14 @@ export async function getApplicationByJobsId(req, res, next) {
   const { jobId } = req.params;
 
   try {
-    const applications =
+    const { data, fromCache } =
       await applicationsService.getApplicationByJobsId(jobId);
+
+    if (fromCache) {
+      res.setHeader("X-Data-Source", "cache");
+    } else {
+      res.setHeader("X-Data-Source", "database");
+    }
 
     sendResponse(
       res,
@@ -76,7 +95,7 @@ export async function getApplicationByJobsId(req, res, next) {
       "Applications berhasil didapatkan",
       "data",
       {
-        applications,
+        applications: data,
       },
     );
   } catch (error) {

@@ -6,7 +6,14 @@ export async function getAllUserBookmarks(req, res, next) {
   const user_id = req.user.id;
 
   try {
-    const bookmarks = await bookmarkService.getAllUserBookmarks(user_id);
+    const { data, fromCache } =
+      await bookmarkService.getAllUserBookmarks(user_id);
+
+    if (fromCache) {
+      res.setHeader("X-Data-Source", "cache");
+    } else {
+      res.setHeader("X-Data-Source", "database");
+    }
 
     sendResponse(
       res,
@@ -15,7 +22,7 @@ export async function getAllUserBookmarks(req, res, next) {
       "Bookmarks berhasil didapatkan",
       "data",
       {
-        bookmarks,
+        bookmarks: data,
       },
     );
   } catch (error) {
