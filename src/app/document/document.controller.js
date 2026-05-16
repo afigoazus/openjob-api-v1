@@ -1,20 +1,34 @@
+import path from "path";
 import { STATUS } from "../../utils/constants.js";
 import AppError from "../../utils/error.js";
 import { sendResponse } from "../../utils/response.js";
 import * as documentService from "./document.service.js";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export async function uploadDocument(req, res, next) {
   try {
     if (!req.file) {
-      throw new AppError(400, "File harus diisi");
+      throw new AppError(400, "File is required");
     }
 
     const user_id = req.user.id;
-    const name = req.file.originalname;
+    const fileName = req.file.filename;
+    const originalName = req.file.originalname;
+    const fileSize = req.file.size;
 
-    const url = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+    const url = `${req.protocol}://${req.get("host")}/uploads/${fileName}`;
 
-    const document = await documentService.createDocument(user_id, name, url);
+    const document = await documentService.createDocument(
+      user_id,
+      fileName,
+      originalName,
+      url,
+      fileSize,
+    );
 
     sendResponse(
       res,
@@ -54,14 +68,12 @@ export async function getDocumentsById(req, res, next) {
   try {
     const document = await documentService.getDocumentsById(id);
 
-    sendResponse(
-      res,
-      200,
-      STATUS.SUCCESS,
-      "Document berhasil didapatkan",
-      "data",
-      document,
-    );
+    const fileName = document.url.split("/uploads/")[1];
+    const filePath = path.join(process.cwd(), "uploads", fileName);
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `inline; filename="${document.name}"`);
+    res.sendFile(filePath);
   } catch (error) {
     next(error);
   }

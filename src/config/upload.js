@@ -1,5 +1,6 @@
 import multer from "multer";
 import path from "path";
+import { INVALID_FILE_TYPE_MESSAGE } from "../utils/constants.js";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),
@@ -13,7 +14,7 @@ const fileFilter = (req, file, cb) => {
   if (file.mimetype === "application/pdf") {
     cb(null, true);
   } else {
-    cb(new Error("Hanya file PDF yang diperbolehkan"), false);
+    cb(new Error(INVALID_FILE_TYPE_MESSAGE), false);
   }
 };
 
