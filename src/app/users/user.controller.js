@@ -27,7 +27,13 @@ export async function getUserById(req, res, next) {
   const { id } = req.params;
 
   try {
-    const user = await getUserByIdService(id);
+    const { data, fromCache } = await getUserByIdService(id);
+
+    if (fromCache) {
+      res.setHeader("X-Data-Source", "cache");
+    } else {
+      res.setHeader("X-Data-Source", "database");
+    }
 
     return sendResponse(
       res,
@@ -35,7 +41,7 @@ export async function getUserById(req, res, next) {
       STATUS.SUCCESS,
       "User berhasil ditemukan",
       "data",
-      user,
+      data,
     );
   } catch (error) {
     next(error);

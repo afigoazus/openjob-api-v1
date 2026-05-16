@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 import bcrypt from "bcrypt";
 import AppError from "../../utils/error.js";
 import UserRepository from "./user.repository.js";
+import cacheService from "../cache/redis.service.js";
 
 export async function registerUserService(data) {
   const existing = await UserRepository.findUserByEmail(data.email);
@@ -17,11 +18,20 @@ export async function registerUserService(data) {
 }
 
 export async function getUserByIdService(id) {
+  const cachekey = `user:${id}`;
+  const cached = await cacheService.get(cachekey);
+
+  if (cached) {
+    return { data: JSON.parse(cached), fromCache: true };
+  }
+
   const user = await UserRepository.findUserById(id);
 
   if (!user) {
     throw new AppError(404, "User tidak ditemukan");
   }
 
-  return user;
+  await cacheService.set(cachekey, JSON.stringify(user));
+
+  return { data: user, fromCache: false };
 }

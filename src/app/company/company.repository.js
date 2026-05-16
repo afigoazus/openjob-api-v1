@@ -1,5 +1,6 @@
 import { nanoid } from "nanoid";
 import pool from "../../config/db.js";
+// import CacheService from "../cache/redis.service.js";
 
 class CompanyRepositories {
   constructor() {
@@ -16,6 +17,8 @@ class CompanyRepositories {
 
     const result = await this.pool.query(query);
 
+    // await this.cacheService.deleteCache("companies");
+
     return result.rows[0];
   }
 
@@ -25,6 +28,8 @@ class CompanyRepositories {
     };
 
     const result = await this.pool.query(query);
+
+    // await this.cacheService.set("companies", JSON.stringify(result.rows));
 
     return result.rows;
   }
