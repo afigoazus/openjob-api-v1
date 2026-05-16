@@ -1,14 +1,24 @@
 import AppError from "../../utils/error.js";
 import documentRepository from "./document.repository.js";
 
-export async function createDocument(user_id, name, url) {
-  const document = await documentRepository.createDocument(user_id, name, url);
+export async function createDocument(user_id, fileName, originalName, url, fileSize) {
+  const document = await documentRepository.createDocument(
+    user_id,
+    originalName,
+    url,
+  );
 
   if (!document) {
     throw new AppError(400, "Gagal mengupload documents");
   }
 
-  return document;
+  // return document;
+  return {
+    documentId: document.id,
+    filename: fileName,
+    originalName: originalName,
+    size: fileSize
+  };
 }
 
 export async function getAllDocuments() {

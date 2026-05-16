@@ -9,3 +9,5 @@ export const STATUS = {
   CONFLICT: "conflict",
   FORBIDDEN: "forbidden",
 };
+
+export const INVALID_FILE_TYPE_MESSAGE = "File is required";
