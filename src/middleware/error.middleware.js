@@ -2,6 +2,7 @@ import { STATUS } from "../utils/constants.js";
 import AppError from "../utils/error.js";
 import { sendResponse } from "../utils/response.js";
 import { logger } from "../utils/logger.js";
+import multer from "multer";
 
 export function errorHandler(err, _req, res, _next) {
   if (err.isJoi || err.name === "ValidationError") {
@@ -15,6 +16,18 @@ export function errorHandler(err, _req, res, _next) {
       err.details?.map((d) => d.message),
     );
     return;
+  }
+
+  if (err instanceof multer.MulterError) {
+    const message = (err.code = "LIMIT_FILE_SIZE"
+      ? "Ukuran file maksimal 5 MB"
+      : err.message);
+    sendResponse(res, 413, STATUS.FAIL, message);
+    return;
+  }
+
+  if (err.message === "Hanya file PDF yang diperbolehkan") {
+    sendResponse(res, 400, STATUS.FAIL, err.message);
   }
 
   if (err instanceof AppError) {

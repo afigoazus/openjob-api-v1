@@ -9,4 +9,16 @@ const storage = multer.diskStorage({
   },
 });
 
-export const upload = multer({ storage });
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === "application/pdf") {
+    cb(null, true);
+  } else {
+    cb(new Error("Hanya file PDF yang diperbolehkan"), false);
+  }
+};
+
+export const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
