@@ -25,12 +25,13 @@ export async function refresh(token) {
   const payload = verifyRefreshToken(token);
 
   const newAccessToken = signAccessToken({ id: payload.id });
-  const newRefreshToken = signRefreshToken({ id: payload.id });
+  // const newRefreshToken = signRefreshToken({ id: payload.id });
 
-  await AuthRepository.deleteRefreshToken(token);
-  await AuthRepository.addRefreshToken(nanoid(16), newRefreshToken, payload.id);
+  // await AuthRepository.deleteRefreshToken(token);
+  // await AuthRepository.addRefreshToken(nanoid(16), newRefreshToken, payload.id);
 
-  return { accessToken: newAccessToken, refreshToken: newRefreshToken };
+  // return { accessToken: newAccessToken, refreshToken: newRefreshToken };
+  return {accessToken: newAccessToken}
 }
 
 export async function logout(token) {

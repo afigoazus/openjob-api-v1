@@ -9,3 +9,5 @@ uploads/*
 ERD-PROMPT.md
 *:Zone.Identifier
 ERD-PROMPT.md
+*.postman_collection.json
+*.postman_environment.json

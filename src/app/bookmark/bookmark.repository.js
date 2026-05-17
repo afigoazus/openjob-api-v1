@@ -21,7 +21,19 @@ class BookmarksRepositories {
 
   async getAllUserBookmarks(user_id) {
     const query = {
-      text: "SELECT * FROM bookmarks WHERE user_id = $1",
+      text: `SELECT 
+            b.id, b.user_id, b.job_id, b.created_at,
+            j.title as job_title, j.job_type, j.experience_level, j.location_type, 
+            j.location_city, j.salary_min, j.salary_max, j.is_salary_visible, 
+            j.status as job_status, j.created_at as job_created_at, j.updated_at as job_updated_at,
+            c.name as category_name,
+            comp.name as company_name,
+            comp.location as company_location
+           FROM bookmarks b
+           JOIN jobs j ON b.job_id = j.id
+           JOIN categories c ON j.category_id = c.id
+           JOIN companies comp ON j.company_id = comp.id
+           WHERE b.user_id = $1`,
       values: [user_id],
     };
 

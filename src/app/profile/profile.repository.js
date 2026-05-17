@@ -18,7 +18,16 @@ class ProfileRepositories {
 
   async getUserApplicant(user_id) {
     const query = {
-      text: "SELECT a.id, a.job_id, a.user_id, a.status, j.title as job_title, j.job_type FROM applications as a JOIN jobs as j on a.job_id = j.id WHERE a.user_id = $1",
+      text: `SELECT 
+            a.id, a.job_id, a.user_id, a.status, a.created_at, a.updated_at,
+            j.title as job_title, j.job_type, j.experience_level, j.location_type,
+            j.location_city, j.salary_min, j.salary_max,
+            comp.name as company_name,
+            comp.location as company_location
+           FROM applications a
+           JOIN jobs j ON a.job_id = j.id
+           JOIN companies comp ON j.company_id = comp.id
+           WHERE a.user_id = $1`,
       values: [user_id],
     };
 
