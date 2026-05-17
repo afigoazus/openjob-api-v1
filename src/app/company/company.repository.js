@@ -7,12 +7,12 @@ class CompanyRepositories {
     this.pool = pool;
   }
 
-  async createCompany({ name, description, location }) {
+  async createCompany({ name, description, location, user_id }) {
     const id = nanoid(16);
 
     const query = {
-      text: "INSERT INTO companies(id, name, description, location) VALUES($1, $2, $3, $4) RETURNING id, name, description, location",
-      values: [id, name, description, location],
+      text: "INSERT INTO companies(id, name, description, location, user_id) VALUES($1, $2, $3, $4, $5) RETURNING id, name, description, location",
+      values: [id, name, description, location, user_id],
     };
 
     const result = await this.pool.query(query);
@@ -24,7 +24,7 @@ class CompanyRepositories {
 
   async getCompany() {
     const query = {
-      text: "SELECT * FROM companies",
+      text: "SELECT id, name, description, location, created_at, updated_at FROM companies",
     };
 
     const result = await this.pool.query(query);

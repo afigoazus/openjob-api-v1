@@ -47,12 +47,14 @@ export async function getCompanyById(req, res, next) {
 
 export async function createCompany(req, res, next) {
   const { name, description, location } = req.validated;
+  const user_id = req.user.id;
 
   try {
     const company = await companyService.createCompany(
       name,
       description,
       location,
+      user_id,
     );
 
     sendResponse(

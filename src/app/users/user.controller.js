@@ -1,6 +1,6 @@
 import { STATUS } from "../../utils/constants.js";
 import { sendResponse } from "../../utils/response.js";
-import { getUserByIdService, registerUserService } from "./user.service.js";
+import { getUserByIdService, registerUserService, updateUserService } from "./user.service.js";
 
 export async function register(req, res, next) {
   const { name, email, password, role } = req.validated;
@@ -42,6 +42,26 @@ export async function getUserById(req, res, next) {
       "User berhasil ditemukan",
       "data",
       data,
+    );
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateUserById(req, res, next) {
+  const { id } = req.params;
+  const { name, email, password, role } = req.validated;
+
+  try {
+    const user = await updateUserService(id, { name, email, password, role });
+
+    return sendResponse(
+      res,
+      200,
+      STATUS.SUCCESS,
+      "User berhasil diupdate",
+      "data",
+      user,
     );
   } catch (error) {
     next(error);

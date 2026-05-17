@@ -105,6 +105,7 @@ export async function getApplicationByJobsId(req, res, next) {
 
 export async function createApplication(req, res, next) {
   const { user_id, job_id, status } = req.validated;
+  // const user_id = req.user.id;
 
   try {
     const applications = await applicationsService.createApplication({

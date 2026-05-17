@@ -16,6 +16,29 @@ class UserRepositories {
     return result.rows[0];
   }
 
+  async updateUser(id, {name, email}) {
+    const fields = []
+    const values = [id]
+    let paramIndex = 2
+
+    if (name) {
+      fields.push(`name = $${paramIndex==}`)
+      values.push(name)
+    }
+    if (email) {
+      fields.push(`email = $${paramIndex++}`)
+      values.push(email) 
+    }
+
+    const query = {
+      text: `UPDATE users SET ${fields.join(', ')} WHERE id = $1 RETURNING id, name, email, role`,
+      values,
+    }
+
+    const result = await this.pool.query(query)
+    return result.rows[0]
+  }
+
   async findUserByEmail(email) {
     const query = {
       text: "SELECT * FROM users WHERE email = $1",

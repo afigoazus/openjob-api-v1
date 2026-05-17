@@ -1,6 +1,8 @@
 import AppError from "../../utils/error.js";
 import applicationsRepository from "./applications.repository.js";
 import cacheService from "../cache/redis.service.js";
+import { rabbitMqServer } from "../../config/rabbitmq-server.js";
+import jobsRepository from "../jobs/jobs.repository.js";
 
 export async function getAllApplications() {
   const applications = await applicationsRepository.getAllApplications();
@@ -9,7 +11,7 @@ export async function getAllApplications() {
 }
 
 export async function getApplicationById(id) {
-  const cachekey = `applicatiions:${id}`;
+  const cachekey = `applications:${id}`;
   const cached = await cacheService.get(cachekey);
 
   if (cached) {
@@ -48,7 +50,7 @@ export async function getApplicationByUserId(user_id) {
 }
 
 export async function getApplicationByJobsId(jobs_id) {
-  const cachekey = `applicationByJob:${jobs_id}`;
+  const cachekey = `applicationsByJob:${jobs_id}`;
   const cached = await cacheService.get(cachekey);
 
   if (cached) {
@@ -68,6 +70,12 @@ export async function getApplicationByJobsId(jobs_id) {
 }
 
 export async function createApplication({ user_id, job_id, status }) {
+  const existingJob = await jobsRepository.getJobsById(job_id);
+
+  if (!existingJob) {
+    throw new AppError(404, "Job tidak ditemukan");
+  }
+
   const applications = await applicationsRepository.createApplication({
     user_id,
     job_id,
@@ -79,6 +87,12 @@ export async function createApplication({ user_id, job_id, status }) {
   }
 
   await cacheService.del(`applicationsByUser:${user_id}`);
+  await cacheService.del(`applicationsByJob:${job_id}`);
+
+  await rabbitMqServer(
+    "applications",
+    JSON.stringify({ application_id: applications.id }),
+  );
 
   return applications;
 }
@@ -94,6 +108,8 @@ export async function updateApplicationStatusById(id, status) {
   }
 
   await cacheService.del(`applications:${id}`);
+  await cacheService.del(`applicationsByUser:${applications.user_id}`);
+  await cacheService.del(`applicationsByJob:${applications.job_id}`);
 
   return applications;
 }

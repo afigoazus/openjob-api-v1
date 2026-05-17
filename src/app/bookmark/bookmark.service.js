@@ -34,6 +34,8 @@ export async function createBookmark(user_id, job_id) {
     throw new AppError(400, "Gagal Menyimpan Bookmark");
   }
 
+  await cacheService.del(`bookmarks:${user_id}`);
+
   return bookmark;
 }
 
@@ -44,7 +46,7 @@ export async function deleteBookmarkByJobId(jobId) {
     throw new AppError(400, "Gagal Menghapus Bookmark");
   }
 
-  await cacheService.del(`bookmarks:${jobId}`);
+  await cacheService.del(`bookmarks:${bookmark.user_id}`);
 
   return bookmark;
 }

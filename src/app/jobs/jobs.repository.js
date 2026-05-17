@@ -68,7 +68,7 @@ class JobsRepositories {
     const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
 
     const query = {
-      text: `SELECT j.id, j.company_id, j.category_id, j.title, j.description, j.job_type, j.salary_min, j.salary_max, j.is_salary_visible, j.status, c.name as category_name, comp.name as company_name FROM jobs as j JOIN categories as c ON j.category_id = c.id JOIN companies as comp ON j.company_id = comp.id ${where}`,
+      text: `SELECT j.id, j.company_id, j.category_id, j.title, j.description, j.job_type, j.salary_min, j.salary_max, j.is_salary_visible, j.status, j.created_at, c.name as category_name, comp.name as company_name FROM jobs as j JOIN categories as c ON j.category_id = c.id JOIN companies as comp ON j.company_id = comp.id ${where}`,
       values,
     };
 

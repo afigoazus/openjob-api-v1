@@ -56,6 +56,10 @@ export function errorHandler(err, _req, res, _next) {
     return;
   }
 
+  if (err.code === "23505") {
+    sendResponse(res, 400, STATUS.FAIL, "Anda sudah melamar pekerjaan ini");
+  }
+
   logger.error(`Unhandled error: ${err.message}\n${err.stack}`);
   sendResponse(res, 500, STATUS.ERROR, "Internal Server Error");
 }

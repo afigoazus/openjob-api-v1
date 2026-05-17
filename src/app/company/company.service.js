@@ -27,11 +27,12 @@ export async function getCompanyById(id) {
   return { data: company, fromCache: false };
 }
 
-export async function createCompany(name, description, location) {
+export async function createCompany(name, description, location, user_id) {
   const company = await companyRepository.createCompany({
     name,
     description,
     location,
+    user_id,
   });
 
   if (!company) {

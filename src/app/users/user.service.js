@@ -35,3 +35,19 @@ export async function getUserByIdService(id) {
 
   return { data: user, fromCache: false };
 }
+
+export async function updateUserService(id, data) {
+  const existing = await UserRepository.findUserById(id);
+  if (!existing) {
+    throw new AppError(404, "User tidak ditemukan");
+  }
+
+  const user = await UserRepository.updateUser(id, data);
+  if (!user) {
+    throw new AppError(400, "Gagal mengupdate user");
+  }
+
+  await cacheService.del(`user:${id}`);
+
+  return user;
+}
